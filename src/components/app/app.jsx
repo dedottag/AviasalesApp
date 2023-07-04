@@ -1,6 +1,6 @@
 import "./app.css";
 import TicketsList from "../tickets-list";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getTicketsAction } from "../store/ticketReducer";
 
@@ -11,14 +11,19 @@ const App = () => {
   useEffect(() => {
     fetch("https://aviasales-test-api.kata.academy/search")
       .then((res) => res.json())
-      .then((res) => setSearcId(res.searchId))
+      .then((res) => {
+        setSearcId(res.searchId);
+      })
       .catch((er) => console.log(er));
   }, []);
 
   const getTicketsFetch = (id) => {
-    fetch(`https://front-test.dev.aviasales.ru/tickets?searchId=${id}`)
+    fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id}`)
       .then((res) => res.json())
-      .then((res) => dispatch(getTicketsAction(res)))
+      .then((res) => {
+        dispatch(getTicketsAction(res));
+        console.log(res);
+      })
       .catch((e) => console.log(e));
   };
 
