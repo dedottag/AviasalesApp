@@ -1,10 +1,9 @@
 import "./tickets-list.css";
-import logo from "./S7.png";
 import "./tickets-list.css";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getShowMoreTickets } from "../store/ticketReducer";
+import { add } from "date-fns";
 
 function interleave(arr, thing) {
   return [].concat(...arr.map((n) => [n, thing])).slice(0, -1);
@@ -17,6 +16,17 @@ function ending(number) {
     return number + " ПЕРЕСАДОК";
   }
   return number + " ПЕРЕСАДКИ";
+}
+
+function toHoursAndMinutes(data) {
+  const result = new Date(data);
+  return `${result.getHours()}:${result.getMinutes()}`;
+}
+
+function addData(date, minutes) {
+  const newData = new Date(date);
+  const result = add(newData, { minutes: minutes });
+  return toHoursAndMinutes(result);
 }
 
 const TicketsList = () => {
@@ -35,12 +45,17 @@ const TicketsList = () => {
         <div className="ticket" key={key++}>
           <div className="ticket-header">
             <span className="ticket-price">{`${ticket.price} P`}</span>
-            <img src={logo} alt="" />
+            <img src={`//pics.avs.io/99/36/${ticket.carrier}.png`} alt="" />
           </div>
           <div className="way-there">
             <div className="destination">
               <span className="cities">{`${ticket.segments[0].origin} - ${ticket.segments[0].destination}`}</span>
-              <span className="time">{`18:45 - 00:10`}</span>
+              <span className="time">
+                {`${toHoursAndMinutes(ticket.segments[0].date)}-${addData(
+                  ticket.segments[0].date,
+                  ticket.segments[0].duration
+                )}`}
+              </span>
             </div>
             <div className="travel-time">
               <span className="way">В ПУТИ</span>
@@ -68,7 +83,12 @@ const TicketsList = () => {
           <div className="way-there">
             <div className="destination">
               <span className="cities">{`${ticket.segments[1].origin} - ${ticket.segments[1].destination}`}</span>
-              <span className="time">{"18:45 - 00:10"}</span>
+              <span className="time">{`${toHoursAndMinutes(
+                ticket.segments[1].date
+              )}-${addData(
+                ticket.segments[1].date,
+                ticket.segments[1].duration
+              )}`}</span>
             </div>
             <div className="travel-time">
               <span className="way">В ПУТИ</span>
