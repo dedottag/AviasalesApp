@@ -3,8 +3,12 @@ import "./tickets-list.css";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
 import { getShowMoreTickets } from "../store/ticketReducer";
-import { add } from "date-fns";
-
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
+import Logo from "./Logo (1).png";
+import { useState } from "react";
+import "../transfers/transfers.css";
+import Transfers from "../transfers/transfers";
 function interleave(arr, thing) {
   return [].concat(...arr.map((n) => [n, thing])).slice(0, -1);
 }
@@ -23,25 +27,76 @@ function toHoursAndMinutes(data) {
   return `${result.getHours()}:${result.getMinutes()}`;
 }
 
-function addData(date, minutes) {
-  const newData = new Date(date);
-  const result = add(newData, { minutes: minutes });
-  return toHoursAndMinutes(result);
-}
+const timeTransplate = (MOW, duration) => {
+  const data = new Date(Date.parse(MOW) + duration * 60000).toISOString();
+  const timeEndFly = format(parseISO(data), "HH:mm");
+  return timeEndFly;
+};
 
 const TicketsList = () => {
   const tickets = useSelector((state) => state.tickets.tickets);
   const visible = useSelector((state) => state.tickets.visible);
   const dispatch = useDispatch();
+  const [items, setItems] = useState([]);
+  const [parameters, setParameters] = useState([]);
+  // console.log(items);
 
   const showMore = () => {
     dispatch(getShowMoreTickets(5));
   };
 
+  const cheapTickets = (price) => {
+    const result = items.filter((el) => el.price <= price);
+    setParameters(result);
+    console.log(items);
+  };
+
+  const fastTickets = (time) => {
+    const result = items.filter((el) => el.segments[0].duration <= time);
+    setParameters(result);
+    // console.log(items);
+  };
+
+  const optimalTickets = (price, time) => {
+    const result = items.filter(
+      (el) => el.price <= price && el.segments[0].duration <= time
+    );
+    setParameters(result);
+    // console.log(items);
+  };
+
+  const transfers = (number) => {
+    const result = tickets.filter(
+      (el) => el.segments[0].stops.length === number
+    );
+    setItems(result);
+  };
+
+  const allTransfers = () => {
+    setParameters(tickets);
+    setItems(tickets);
+  };
+
   let key = 1;
   return (
     <div className="tickets-list-container">
-      {tickets.slice(0, visible).map((ticket) => (
+      <img className="logo" src={Logo} alt="" />
+      <Transfers transfers={transfers} allTransfers={allTransfers} />
+      <div className="buttons-container">
+        <div className="button button1" onClick={() => cheapTickets(15000)}>
+          САМЫЙ ДЕШЕВЫЙ
+        </div>
+        <div className="button button2" onClick={() => fastTickets(1000)}>
+          САМЫЙ БЫСТРЫЙ
+        </div>
+        <div
+          className="button button3"
+          onClick={() => optimalTickets(25000, 1000)}
+        >
+          ОПТИМАЛЬНЫЙ
+        </div>
+      </div>
+      {parameters.slice(0, visible).map((ticket) => (
         <div className="ticket" key={key++}>
           <div className="ticket-header">
             <span className="ticket-price">{`${ticket.price} P`}</span>
@@ -51,7 +106,9 @@ const TicketsList = () => {
             <div className="destination">
               <span className="cities">{`${ticket.segments[0].origin} - ${ticket.segments[0].destination}`}</span>
               <span className="time">
-                {`${toHoursAndMinutes(ticket.segments[0].date)}-${addData(
+                {`${toHoursAndMinutes(
+                  ticket.segments[0].date
+                )}-${timeTransplate(
                   ticket.segments[0].date,
                   ticket.segments[0].duration
                 )}`}
@@ -85,7 +142,7 @@ const TicketsList = () => {
               <span className="cities">{`${ticket.segments[1].origin} - ${ticket.segments[1].destination}`}</span>
               <span className="time">{`${toHoursAndMinutes(
                 ticket.segments[1].date
-              )}-${addData(
+              )}-${timeTransplate(
                 ticket.segments[1].date,
                 ticket.segments[1].duration
               )}`}</span>

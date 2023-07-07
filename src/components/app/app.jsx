@@ -17,19 +17,17 @@ const App = () => {
       .catch((er) => console.log(er));
   }, []);
 
-  const getTicketsFetch = (id) => {
-    fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id}`)
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch(getTicketsAction(res));
-        console.log(res);
-      })
-      .catch((e) => console.log(e));
-  };
-
   useEffect(() => {
     if (searchId) {
-      getTicketsFetch(searchId);
+      fetch(
+        `https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          dispatch(getTicketsAction(res));
+          // console.log(res);
+        })
+        .catch((e) => console.log(e));
     }
   }, [searchId]);
 
