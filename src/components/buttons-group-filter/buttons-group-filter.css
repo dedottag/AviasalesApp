@@ -2,33 +2,43 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 542px;
-  height: 50px;
-  border: 1px solid #dfe5ec;
-  border-radius: 5px;
+  /* width: 530px; */
   margin-top: 30px;
   margin-bottom: 10px;
   /* background-color: brown; */
 }
 
-.buttons-container .button {
+.button {
   width: 180px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 500ms ease;
+  transition: all 250ms ease;
+  font-family: Open Sans;
+  border: 1px solid #dfe5ec;
+  border-radius: 5px;
 }
 .buttons-container .button:hover {
   background-color: #2196f3;
   color: white;
-  font-family: Open Sans;
   cursor: pointer;
+  border: 0px;
+  /* border-radius: 5px; */
 }
-
 .button2 {
-  border-left: solid 1px #dfe5ec;
+  border-radius: 0px;
+}
+.button1 {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 .button3 {
-  border-left: solid 1px #dfe5ec;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.button:focus {
+  background-color: #2196f3;
+  border: 1px solid #dfe5ec;
+  color: white;
 }

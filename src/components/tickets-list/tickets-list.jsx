@@ -9,6 +9,7 @@ import Logo from "./Logo (1).png";
 import { useState } from "react";
 import "../transfers/transfers.css";
 import Transfers from "../transfers/transfers";
+import ButtonsFilter from "../buttons-group-filter/buttons-group-filter";
 function interleave(arr, thing) {
   return [].concat(...arr.map((n) => [n, thing])).slice(0, -1);
 }
@@ -82,20 +83,11 @@ const TicketsList = () => {
     <div className="tickets-list-container">
       <img className="logo" src={Logo} alt="" />
       <Transfers transfers={transfers} allTransfers={allTransfers} />
-      <div className="buttons-container">
-        <div className="button button1" onClick={() => cheapTickets(15000)}>
-          САМЫЙ ДЕШЕВЫЙ
-        </div>
-        <div className="button button2" onClick={() => fastTickets(1000)}>
-          САМЫЙ БЫСТРЫЙ
-        </div>
-        <div
-          className="button button3"
-          onClick={() => optimalTickets(25000, 1000)}
-        >
-          ОПТИМАЛЬНЫЙ
-        </div>
-      </div>
+      <ButtonsFilter
+        cheapTickets={cheapTickets}
+        fastTickets={fastTickets}
+        optimalTickets={optimalTickets}
+      />
       {parameters.slice(0, visible).map((ticket) => (
         <div className="ticket" key={key++}>
           <div className="ticket-header">

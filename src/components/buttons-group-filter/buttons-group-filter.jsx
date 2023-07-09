@@ -1,36 +1,20 @@
 import "./buttons-group-filter.css";
 
-const categories = [
-  {
-    key: "cheap",
-    name: "САМЫЙ ДЕШЕВЫЙ",
-    clas: "button1",
-    price: 30000,
-  },
-  {
-    key: "fast",
-    name: "САМЫЙ БЫСТРЫЙ",
-    clas: "button2",
-  },
-  {
-    key: "OPTIMAL",
-    name: "ОПТИМАЛЬНЫЙ",
-    clas: "button3",
-  },
-];
-
-const ButtonsFilter = ({ cheapTickets }) => {
+const ButtonsFilter = ({ cheapTickets, fastTickets, optimalTickets }) => {
   return (
     <div className="buttons-container">
-      {categories.map((el) => (
-        <div
-          className={`button ${el.clas}`}
-          key={el.key}
-          onClick={() => cheapTickets(el.price)}
-        >
-          {el.name}
-        </div>
-      ))}
+      <button className="button button1" onClick={() => cheapTickets(15000)}>
+        САМЫЙ ДЕШЕВЫЙ
+      </button>
+      <button className="button button2" onClick={() => fastTickets(1000)}>
+        САМЫЙ БЫСТРЫЙ
+      </button>
+      <button
+        className="button button3"
+        onClick={() => optimalTickets(25000, 1000)}
+      >
+        ОПТИМАЛЬНЫЙ
+      </button>
     </div>
   );
 };
