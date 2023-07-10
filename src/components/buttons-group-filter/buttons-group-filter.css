@@ -2,9 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* width: 530px; */
-  margin-top: 30px;
   margin-bottom: 10px;
+  height: 50px;
   /* background-color: brown; */
 }
 
@@ -17,6 +16,7 @@
   transition: all 250ms ease;
   font-family: Open Sans;
   border: 1px solid #dfe5ec;
+  background-color: #fff;
   border-radius: 5px;
 }
 .buttons-container .button:hover {

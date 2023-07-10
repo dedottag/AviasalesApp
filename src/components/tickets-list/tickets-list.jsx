@@ -5,11 +5,9 @@ import { useDispatch } from "react-redux";
 import { getShowMoreTickets } from "../store/ticketReducer";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import Logo from "./Logo (1).png";
-import { useState } from "react";
 import "../transfers/transfers.css";
-import Transfers from "../transfers/transfers";
 import ButtonsFilter from "../buttons-group-filter/buttons-group-filter";
+
 function interleave(arr, thing) {
   return [].concat(...arr.map((n) => [n, thing])).slice(0, -1);
 }
@@ -33,62 +31,20 @@ const timeTransplate = (MOW, duration) => {
   const timeEndFly = format(parseISO(data), "HH:mm");
   return timeEndFly;
 };
-
 const TicketsList = () => {
-  const tickets = useSelector((state) => state.tickets.tickets);
   const visible = useSelector((state) => state.tickets.visible);
+  const ticketsClone = useSelector((state) => state.ticketsClone.ticketsFilter);
   const dispatch = useDispatch();
-  const [items, setItems] = useState([]);
-  const [parameters, setParameters] = useState([]);
-  // console.log(items);
 
   const showMore = () => {
     dispatch(getShowMoreTickets(5));
   };
 
-  const cheapTickets = (price) => {
-    const result = items.filter((el) => el.price <= price);
-    setParameters(result);
-    console.log(items);
-  };
-
-  const fastTickets = (time) => {
-    const result = items.filter((el) => el.segments[0].duration <= time);
-    setParameters(result);
-    // console.log(items);
-  };
-
-  const optimalTickets = (price, time) => {
-    const result = items.filter(
-      (el) => el.price <= price && el.segments[0].duration <= time
-    );
-    setParameters(result);
-    // console.log(items);
-  };
-
-  const transfers = (number) => {
-    const result = tickets.filter(
-      (el) => el.segments[0].stops.length === number
-    );
-    setItems(result);
-  };
-
-  const allTransfers = () => {
-    setParameters(tickets);
-    setItems(tickets);
-  };
-
   let key = 1;
   return (
     <div className="tickets-list-container">
-      <img className="logo" src={Logo} alt="" />
-      <Transfers transfers={transfers} allTransfers={allTransfers} />
-      <ButtonsFilter
-        cheapTickets={cheapTickets}
-        fastTickets={fastTickets}
-        optimalTickets={optimalTickets}
-      />
-      {parameters.slice(0, visible).map((ticket) => (
+      <ButtonsFilter />
+      {ticketsClone.slice(0, visible).map((ticket) => (
         <div className="ticket" key={key++}>
           <div className="ticket-header">
             <span className="ticket-price">{`${ticket.price} P`}</span>
@@ -164,9 +120,17 @@ const TicketsList = () => {
           </div>
         </div>
       ))}
-      <button className="show-more" onClick={() => showMore()}>
-        ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ
-      </button>
+      <div className="show-more-buttons-container">
+        {(() => {
+          if (ticketsClone.length)
+            return (
+              <button className="show-more" onClick={() => showMore()}>
+                ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ
+              </button>
+            );
+          return null;
+        })()}
+      </div>
     </div>
   );
 };

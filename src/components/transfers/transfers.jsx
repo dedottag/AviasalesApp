@@ -1,9 +1,33 @@
 import "./transfers.css";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import {
+  getTicketsTransfer,
+  getTicketsFilter,
+} from "../store/tikcketsCloneReducer";
+import { getUpdateVisible } from "../store/ticketReducer";
 
-const Transfers = ({ transfers, allTransfers }) => {
-  const [selectedItem, setSelectedItem] = useState("");
+const Transfers = () => {
   let number;
+  const [selectedItem, setSelectedItem] = useState("");
+  const tickets = useSelector((state) => state.tickets.tickets);
+  const dispatch = useDispatch();
+
+  const transfers = (number) => {
+    const result = tickets.filter(
+      (el) => el.segments[0].stops.length === number
+    );
+    dispatch(getTicketsTransfer(result));
+    dispatch(getTicketsFilter(result));
+    dispatch(getUpdateVisible());
+  };
+
+  const allTransfers = () => {
+    dispatch(getTicketsFilter(tickets));
+    dispatch(getTicketsTransfer(tickets));
+    dispatch(getUpdateVisible());
+  };
 
   const onChangeHandler = (event) => {
     setSelectedItem(event.target.name);

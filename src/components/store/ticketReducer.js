@@ -5,6 +5,7 @@ const inicialState = {
 
 const GET_TICKETS = "GET_TICKETS";
 const SHOW_MORE = "SHOW_MORE";
+const UPDATE_VISIBLR = "UPDATE_VISIBLE";
 
 export const ticketReducer = (state = inicialState, action) => {
   switch (action.type) {
@@ -18,6 +19,11 @@ export const ticketReducer = (state = inicialState, action) => {
         ...state,
         visible: state.visible + action.payload,
       };
+    case UPDATE_VISIBLR:
+      return {
+        ...state,
+        visible: (state.visible = 5),
+      };
     default:
       return state;
   }
@@ -25,3 +31,4 @@ export const ticketReducer = (state = inicialState, action) => {
 
 export const getTicketsAction = (payload) => ({ type: GET_TICKETS, payload });
 export const getShowMoreTickets = (payload) => ({ type: SHOW_MORE, payload });
+export const getUpdateVisible = () => ({ type: UPDATE_VISIBLR });

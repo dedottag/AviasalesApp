@@ -3,6 +3,8 @@ import TicketsList from "../tickets-list";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getTicketsAction } from "../store/ticketReducer";
+import Transfers from "../transfers/transfers";
+import Logo from "./Logo (1).png";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,10 +31,15 @@ const App = () => {
         })
         .catch((e) => console.log(e));
     }
-  }, [searchId]);
+  }, [searchId, dispatch]);
 
   return (
     <div className="app-container">
+      <div className="logo-contaiiner">
+        <img className="logo" src={Logo} alt="" />
+      </div>
+
+      <Transfers />
       <TicketsList />
     </div>
   );
