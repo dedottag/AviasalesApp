@@ -122,13 +122,12 @@ const TicketsList = () => {
       ))}
       <div className="show-more-buttons-container">
         {(() => {
-          if (ticketsClone.length)
-            return (
-              <button className="show-more" onClick={() => showMore()}>
-                ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ
-              </button>
-            );
-          return null;
+          if (ticketsClone.length <= 5) return null;
+          return (
+            <button className="show-more" onClick={() => showMore()}>
+              ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ
+            </button>
+          );
         })()}
       </div>
     </div>
