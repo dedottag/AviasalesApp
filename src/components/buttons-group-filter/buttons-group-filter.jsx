@@ -5,21 +5,25 @@ import { getTicketsFilter } from "../store/tikcketsCloneReducer";
 
 const ButtonsFilter = () => {
   const dispatch = useDispatch();
-  const ticketsClone = useSelector(
+
+  const ticketsTransfer = useSelector(
     (state) => state.ticketsClone.ticketsTransfer
   );
+
   const cheapTickets = (price) => {
-    const result = ticketsClone.filter((el) => el.price <= price);
+    const result = ticketsTransfer.filter((el) => el.price <= price);
     dispatch(getTicketsFilter(result));
   };
 
   const fastTickets = (time) => {
-    const result = ticketsClone.filter((el) => el.segments[0].duration <= time);
+    const result = ticketsTransfer.filter(
+      (el) => el.segments[0].duration <= time
+    );
     dispatch(getTicketsFilter(result));
   };
 
   const optimalTickets = (price, time) => {
-    const result = ticketsClone.filter(
+    const result = ticketsTransfer.filter(
       (el) => el.price <= price && el.segments[0].duration <= time
     );
     dispatch(getTicketsFilter(result));

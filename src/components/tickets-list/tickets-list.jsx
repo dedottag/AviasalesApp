@@ -31,10 +31,14 @@ const timeTransplate = (MOW, duration) => {
   const timeEndFly = format(parseISO(data), "HH:mm");
   return timeEndFly;
 };
+
 const TicketsList = () => {
   const visible = useSelector((state) => state.tickets.visible);
-  const ticketsClone = useSelector((state) => state.ticketsClone.ticketsFilter);
+  const ticketsFilter = useSelector(
+    (state) => state.ticketsClone.ticketsFilter
+  );
   const dispatch = useDispatch();
+  // console.log(ticketsClone);
 
   const showMore = () => {
     dispatch(getShowMoreTickets(5));
@@ -44,7 +48,7 @@ const TicketsList = () => {
   return (
     <div className="tickets-list-container">
       <ButtonsFilter />
-      {ticketsClone.slice(0, visible).map((ticket) => (
+      {ticketsFilter.slice(0, visible).map((ticket) => (
         <div className="ticket" key={key++}>
           <div className="ticket-header">
             <span className="ticket-price">{`${ticket.price} P`}</span>
@@ -122,12 +126,21 @@ const TicketsList = () => {
       ))}
       <div className="show-more-buttons-container">
         {(() => {
-          if (ticketsClone.length <= 5) return null;
-          return (
-            <button className="show-more" onClick={() => showMore()}>
-              ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ
-            </button>
-          );
+          if (ticketsFilter.length > 0 && ticketsFilter.length <= 5)
+            return null;
+          else if (ticketsFilter.length === 0) {
+            return (
+              <div style={{ fontSize: "20px" }}>
+                Рейсов, подходящих под заданные фильтры, не найдено...
+              </div>
+            );
+          } else {
+            return (
+              <button className="show-more" onClick={() => showMore()}>
+                ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ
+              </button>
+            );
+          }
         })()}
       </div>
     </div>

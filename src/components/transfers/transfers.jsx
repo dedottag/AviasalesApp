@@ -52,7 +52,7 @@ const Transfers = () => {
         <input
           type="checkbox"
           name="thero"
-          checked={selectedItem === "thero"}
+          checked={selectedItem === "thero" || selectedItem === "all"}
           onChange={(e) => {
             number = 0;
             transfers(number);
@@ -65,7 +65,7 @@ const Transfers = () => {
         <input
           type="checkbox"
           name="one"
-          checked={selectedItem === "one"}
+          checked={selectedItem === "one" || selectedItem === "all"}
           onChange={(e) => {
             number = 1;
             transfers(number);
@@ -78,7 +78,7 @@ const Transfers = () => {
         <input
           type="checkbox"
           name="two"
-          checked={selectedItem === "two"}
+          checked={selectedItem === "two" || selectedItem === "all"}
           onChange={(e) => {
             number = 2;
             transfers(number);
@@ -91,7 +91,7 @@ const Transfers = () => {
         <input
           type="checkbox"
           name="three"
-          checked={selectedItem === "three"}
+          checked={selectedItem === "three" || selectedItem === "all"}
           onChange={(e) => {
             number = 3;
             transfers(number);
